@@ -55,6 +55,25 @@ router.post('/:id/comments',function(req,res){
 });
 
 
+router.get('/:id/tags/new', function(req, res) {
+  res.render('tags/new', {favoriteId: req.params.id});
+});
+
+router.post('/:id/tags', function(req, res) {
+  // res.send("The tag name: " + req.body.tagName + "<br>The favorite id: " + req.params.id);
+  var tagName = req.body.tagName;
+  var favoriteId = req.params.id;
+
+  db.favorite.findById(favoriteId).then(function(favorite) {
+    db.tag.findOrCreate({where: {tag: tagName}}).spread(function(tag, created) {
+      favorite.addTag(tag).then(function() {
+        res.redirect('/favorites/');
+      })
+    });
+  });
+});
+
+
 module.exports = router;
 
 
