@@ -1,0 +1,7 @@
+<h1>Movies</h1>
+
+<% movies.Search.forEach(function(movie) { %>
+<div class="well">
+  <h2><a href="/movies/<%= movie.imdbID %>"><%= movie.Title %></a></h2>
+</div>
+<% }); %>
