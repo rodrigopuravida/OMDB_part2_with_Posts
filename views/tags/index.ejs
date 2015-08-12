@@ -1,0 +1,8 @@
+<h1>Tag List</h1>
+
+<% tags.forEach(function(tag) { %>
+<div class="well">
+<h2>Tag: <a href="/favorites/<%= tag.id %>"><%= tag.tag %></a></h2>
+
+</div>
+<% }); %>

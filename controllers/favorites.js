@@ -4,12 +4,40 @@ var db = require('../models');
 
 // GET http://localhost:3000/favorites
 router.get('/',function(req,res){
+
+  console.log('I am at favorites / index');
+
   db.favorite.findAll({
     include:[db.comment]
   }).then(function(favorites){
     res.render('favorites/index',{favorites:favorites});
   });
 });
+
+// GET http://localhost:3000/favorites/tags
+router.get('/tags',function(req,res){
+  db.tag.findAll({
+  }).then(function(tags){
+    res.render('tags/index',{tags:tags});
+  });
+});
+
+
+
+// GET http://localhost:3000/favorites/:id -RENDER FAVORITES BASED ON TAGS
+router.get('/:id',function(req,res){
+
+  // console.log('I am at favorites / for filtering based on tag');
+  // tagId = req.params.id;
+  // // res.send({params:req.params.id});
+  // db.posttag.find({
+  //   where:{tagId:tagId}).then(function(posttag)
+  //   {db.favorite.find({id: posttag.favoriteId}).then(function(favorite))
+  //       res.render('favorites/index',{favorites:favorite});
+  // });
+});
+
+
 
 // POST http://localhost:3000/favorites
 router.post('/',function(req,res){
@@ -67,9 +95,20 @@ router.post('/:id/tags', function(req, res) {
   db.favorite.findById(favoriteId).then(function(favorite) {
     db.tag.findOrCreate({where: {tag: tagName}}).spread(function(tag, created) {
       favorite.addTag(tag).then(function() {
-        res.redirect('/favorites/');
+
+            res.redirect('/favorites');
+
       })
     });
+  });
+});
+
+
+// GET http://localhost:3000/favorites/tags
+router.get('/tags',function(req,res){
+  db.tag.findAll({
+  }).then(function(tags){
+    res.render('tags/index',{tags:tags});
   });
 });
 
